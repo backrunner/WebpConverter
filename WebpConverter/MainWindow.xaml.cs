@@ -47,14 +47,34 @@ namespace WebpConverter
         {
             if (File.Exists(configPath))
             {
-                config = iniParser.ReadFile(configPath);
-                //根据设置项更新UI
-                cb_autoConvert.IsChecked = bool.Parse(config["Config"]["AutoConvert"]);
-                cb_outputFormat.SelectedIndex = int.Parse(config["Config"]["OutputSelect"]);
+                try
+                {
+                    config = iniParser.ReadFile(configPath);                    
+                }
+                catch
+                {
+                    //do nothing
+                }
+
+                if (config != null)
+                {
+                    //根据设置项更新UI
+                    cb_autoConvert.IsChecked = bool.Parse(config["Config"]["AutoConvert"]);
+                    cb_outputFormat.SelectedIndex = int.Parse(config["Config"]["OutputSelect"]);
+                }
+            }
+            else
+            {
+                config = new IniData();
             }
         }
 
         private void Btn_convert_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ConvertToWebP()
         {
 
         }
@@ -113,20 +133,12 @@ namespace WebpConverter
 
         private void Cb_autoConvert_Checked(object sender, RoutedEventArgs e)
         {
-            if (config == null)
-            {
-                config = new IniData();
-            }
             config["Config"]["AutoConvert"] = cb_autoConvert.IsChecked.ToString();
             SaveConfig();
         }        
 
         private void Cb_outputFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (config == null)
-            {
-                config = new IniData();
-            }
             config["Config"]["AutoConvert"] = cb_outputFormat.SelectedIndex.ToString();
             SaveConfig();
         }
