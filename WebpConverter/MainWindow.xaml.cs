@@ -42,8 +42,8 @@ namespace WebpConverter
         private MetroDialogSettings generalDialogSetting = new MetroDialogSettings()
         {
             AffirmativeButtonText = "确定",
-            DialogTitleFontSize = 18,
-            DialogMessageFontSize = 16
+            DialogTitleFontSize = 17,
+            DialogMessageFontSize = 14
         };
 
         //flag

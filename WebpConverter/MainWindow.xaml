@@ -7,21 +7,21 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="WebpConverter.MainWindow"
         mc:Ignorable="d"
-        Title="WebP转换器" Height="350" Width="598" ResizeMode="NoResize" Loaded="MetroWindow_Loaded">
+        Title="WebP转换器" Height="365" Width="598" ResizeMode="NoResize" Loaded="MetroWindow_Loaded">
     <Grid>
-        <Rectangle x:Name="rect_dragArea" Fill="#FFF4F4F5" Height="184" Margin="23,80,0,0" Stroke="Black" VerticalAlignment="Top" AllowDrop="True" Drop="Rect_dragArea_Drop" HorizontalAlignment="Left" Width="548"/>
-        <Label x:Name="lbl_dragArea" Content="拖放你需要转换的图片文件到此处" Margin="125,154,0,0" VerticalAlignment="Top" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="340" Drop="Lbl_dragArea_Drop" AllowDrop="True"/>
+        <Rectangle x:Name="rect_dragArea" Height="184" StrokeDashArray="5,2,1,2" Margin="23,90,0,0" Stroke="#FFA4A4A4" VerticalAlignment="Top" AllowDrop="True" Drop="Rect_dragArea_Drop" HorizontalAlignment="Left" Width="548" RadiusX="10" RadiusY="10" StrokeThickness="2" Fill="White"/>
+        <Label x:Name="lbl_dragArea" Content="拖放你需要转换的图片文件到此处" Margin="125,167,0,0" VerticalAlignment="Top" FontSize="18" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="340" Drop="Lbl_dragArea_Drop" AllowDrop="True" Background="{x:Null}" Foreground="#FFA6A6A6"/>
         <Label Content="图片路径" HorizontalAlignment="Left" Margin="23,17,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <TextBox x:Name="tb_fileName" HorizontalAlignment="Left" Height="23" Margin="23,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="520" RenderTransformOrigin="0.563,1.24" VerticalContentAlignment="Center"/>
         <Button x:Name="btn_selectFile" Content="..." HorizontalAlignment="Left" Margin="548,47,0,0" VerticalAlignment="Top" Width="23" Height="23" Click="Btn_selectFile_Click"/>
-        <Button x:Name="btn_convert" Content="转换" HorizontalAlignment="Left" Margin="484,274,0,0" VerticalAlignment="Top" Width="87" Height="28" Click="Btn_convert_Click"/>
+        <Button x:Name="btn_convert" Content="转换" HorizontalAlignment="Left" Margin="484,290,0,0" VerticalAlignment="Top" Width="87" Height="28" Click="Btn_convert_Click"/>
         <CheckBox x:Name="cb_autoConvert" Content="自动转换" HorizontalAlignment="Left" Margin="499,20,0,0" VerticalAlignment="Top" Checked="Cb_autoConvert_Checked"/>
-        <ComboBox x:Name="cb_outputFormat" HorizontalAlignment="Left" Margin="393,274,0,0" VerticalAlignment="Top" Width="86" Height="28" SelectedIndex="0" Visibility="Hidden" SelectionChanged="Cb_outputFormat_SelectionChanged">
+        <ComboBox x:Name="cb_outputFormat" HorizontalAlignment="Left" Margin="393,289,0,0" VerticalAlignment="Top" Width="86" Height="28" SelectedIndex="0" SelectionChanged="Cb_outputFormat_SelectionChanged" Visibility="Hidden">
             <System:String>PNG</System:String>
             <System:String>JPG - 高质量</System:String>
             <System:String>JPG - 普通质量</System:String>
         </ComboBox>
-        <Label x:Name="lbl_outputFormat" Content="输出格式" HorizontalAlignment="Left" Margin="330,274,0,0" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <Label x:Name="lbl_outputFormat" Content="输出格式" HorizontalAlignment="Left" Margin="330,290,0,0" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center" Visibility="Hidden"/>
 
     </Grid>
 </Controls:MetroWindow>
