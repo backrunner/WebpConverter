@@ -19,6 +19,7 @@
         <ComboBox x:Name="cb_outputFormat" HorizontalAlignment="Left" Margin="393,274,0,0" VerticalAlignment="Top" Width="86" Height="28" SelectedIndex="0" Visibility="Hidden" SelectionChanged="Cb_outputFormat_SelectionChanged">
             <System:String>PNG</System:String>
             <System:String>JPG - 高质量</System:String>
+            <System:String>JPG - 普通质量</System:String>
         </ComboBox>
         <Label x:Name="lbl_outputFormat" Content="输出格式" HorizontalAlignment="Left" Margin="330,274,0,0" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center" Visibility="Hidden"/>
 
