@@ -219,7 +219,7 @@ namespace WebpConverter
 
         //导入文件
         private async void PutFile(string path) {
-            string extension = Path.GetExtension(path);
+            string extension = Path.GetExtension(path).ToLower();
             if (extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png"))
             {
                 filePath = path;
