@@ -64,7 +64,7 @@ namespace WebpConverter
             {
                 try
                 {
-                    config = iniParser.ReadFile(configPath);                    
+                    config = iniParser.ReadFile(configPath);
                 }
                 catch
                 {
@@ -79,7 +79,7 @@ namespace WebpConverter
                     cb_autoConvert.IsChecked = isAutoConvert;
 
                     int formatIndex = 0;
-                    int.TryParse(config["Config"]["OutputSelect"],out formatIndex);
+                    int.TryParse(config["Config"]["OutputSelect"], out formatIndex);
                     cb_outputFormat.SelectedIndex = formatIndex;
                 }
             }
@@ -97,12 +97,14 @@ namespace WebpConverter
             if (filePath == null || filePath.Length <= 0)
             {
                 await this.ShowMessageAsync("错误", "请选择需要转换的图片。", MessageDialogStyle.Affirmative, generalDialogSetting);
-            } else
+            }
+            else
             {
                 if (isToWebP)
                 {
                     ConvertToWebP(filePath);
-                } else
+                }
+                else
                 {
                     switch (cb_outputFormat.SelectedIndex)
                     {
@@ -130,7 +132,7 @@ namespace WebpConverter
         {
             ISupportedImageFormat jpgFormat = new JpegFormat { Quality = 100 };
             ConvertWebPToImage(path, jpgFormat, ".jpg");
-        }        
+        }
 
         private void ConvertToJPGNQ(string path)
         {
@@ -221,7 +223,7 @@ namespace WebpConverter
                     }
                     try
                     {
-                        WebPFormat webpFormat = new WebPFormat();                        
+                        WebPFormat webpFormat = new WebPFormat();
                         imageFactory.Load(webpFormat.Load(inStream)).Format(format).Save(savePath);
                     }
                     catch (Exception e)
@@ -259,12 +261,13 @@ namespace WebpConverter
             if (fileDialog.ShowDialog() == true)
             {
                 string path = fileDialog.FileName;
-                PutFile(path);                
+                PutFile(path);
             }
         }
 
         //导入文件
-        private async void PutFile(string path) {
+        private async void PutFile(string path)
+        {
             string extension = Path.GetExtension(path).ToLower();
             if (extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png"))
             {
@@ -281,11 +284,37 @@ namespace WebpConverter
                 isToWebP = false;
                 lbl_outputFormat.Visibility = Visibility.Visible;
                 cb_outputFormat.Visibility = Visibility.Visible;
+
             }
             else
             {
                 await this.ShowMessageAsync("类型错误", "工具只支持 jpg，png，webp 格式的文件。", MessageDialogStyle.Affirmative, generalDialogSetting);
+                return;
             }
+            this.BeginInvoke(()=> {
+                if (cb_autoConvert.IsChecked == true)
+                {
+                    if (isToWebP)
+                    {
+                        ConvertToWebP(filePath);
+                    }
+                    else
+                    {
+                        switch (cb_outputFormat.SelectedIndex)
+                        {
+                            case 0:
+                                ConvertToPNG(filePath);
+                                break;
+                            case 1:
+                                ConvertToJPGHQ(filePath);
+                                break;
+                            case 2:
+                                ConvertToJPGNQ(filePath);
+                                break;
+                        }
+                    }
+                }
+            });
         }
 
         #endregion
@@ -300,7 +329,7 @@ namespace WebpConverter
             }
             config["Config"]["AutoConvert"] = cb_autoConvert.IsChecked.ToString();
             SaveConfig();
-        }        
+        }
 
         private void Cb_outputFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -309,7 +338,7 @@ namespace WebpConverter
                 config = new IniData();
             }
             config["Config"]["AutoConvert"] = cb_outputFormat.SelectedIndex.ToString();
-            SaveConfig();            
+            SaveConfig();
         }
 
         private void SaveConfig()
