@@ -13,12 +13,19 @@ using WebpConverter;
 namespace WebpConverterExtension
 {
     [ComVisible(true)]
-    [COMServerAssociation(AssociationType.ClassOfExtension, ".webp")]
+    [COMServerAssociation(AssociationType.AllFiles)]
     public class WebPExtension : SharpContextMenu
     {
         protected override bool CanShowMenu()
         {
-            return true;
+            foreach (var filePath in SelectedItemPaths)
+            {
+                if (Path.GetExtension(filePath).ToLower() == ".webp")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         protected override ContextMenuStrip CreateMenu()
@@ -32,12 +39,17 @@ namespace WebpConverterExtension
             {
                 Text = "将 WebP 转换为 PNG"
             };
+            var separator_top = new ToolStripSeparator();
+            var separator_bottom = new ToolStripSeparator();
+
             item_jpg.Click += (sender, args) => ConvertToJPG();
             item_png.Click += (sender, args) => ConvertToPNG();
 
             //add items to menu
-            menu.Items.Add(item_jpg);
+            menu.Items.Add(separator_top);
             menu.Items.Add(item_png);
+            menu.Items.Add(item_jpg);            
+            menu.Items.Add(separator_bottom);
 
             return menu;
         }
@@ -66,12 +78,20 @@ namespace WebpConverterExtension
     }
 
     [ComVisible(true)]
-    [COMServerAssociation(AssociationType.ClassOfExtension, ".jpg",".jpeg",".png")]
+    [COMServerAssociation(AssociationType.AllFiles)]
     public class WebPExtension_Reverse : SharpContextMenu
     {
         protected override bool CanShowMenu()
         {
-            return true;
+            foreach (var filePath in SelectedItemPaths)
+            {
+                string extension = Path.GetExtension(filePath).ToLower();
+                if (extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         protected override ContextMenuStrip CreateMenu()
@@ -81,10 +101,16 @@ namespace WebpConverterExtension
             {
                 Text = "将图片转换为 WebP"
             };
+
+            var separator_top = new ToolStripSeparator();
+            var separator_bottom = new ToolStripSeparator();
+
             item.Click += (sender, args) => ConvertToWebP();
 
             //add items to menu
+            menu.Items.Add(separator_top);
             menu.Items.Add(item);
+            menu.Items.Add(separator_bottom);
 
             return menu;
         }

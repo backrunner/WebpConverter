@@ -122,29 +122,29 @@ namespace WebpConverter
 
         private void ConvertToWebP(string path)
         {
-            ISupportedImageFormat webpFormat = new WebPFormat { Quality=100 };
-            ConvertImage(path, webpFormat);
+            ISupportedImageFormat webpFormat = new WebPFormat { Quality = 100 };
+            ConvertImageToWebP(path, webpFormat);
         }
 
         private void ConvertToJPGHQ(string path)
         {
             ISupportedImageFormat jpgFormat = new JpegFormat { Quality = 100 };
-            ConvertImage(path, jpgFormat);
-        }
+            ConvertWebPToImage(path, jpgFormat, ".jpg");
+        }        
 
         private void ConvertToJPGNQ(string path)
         {
             ISupportedImageFormat jpgFormat = new JpegFormat { Quality = 80 };
-            ConvertImage(path, jpgFormat);
+            ConvertWebPToImage(path, jpgFormat, ".jpg");
         }
 
         private void ConvertToPNG(string path)
         {
             ISupportedImageFormat pngFormat = new PngFormat { Quality = 100 };
-            ConvertImage(path, pngFormat);
+            ConvertWebPToImage(path, pngFormat, ".png");
         }
 
-        private async void ConvertImage(string path, ISupportedImageFormat format)
+        private async void ConvertImageToWebP(string path, ISupportedImageFormat format)
         {
             byte[] b_image;
             try
@@ -177,6 +177,52 @@ namespace WebpConverter
                     try
                     {
                         imageFactory.Load(inStream).Format(format).Save(savePath);
+                    }
+                    catch (Exception e)
+                    {
+                        await this.ShowMessageAsync("错误", "转换时发生错误: " + e.Message, MessageDialogStyle.Affirmative, generalDialogSetting);
+                        return;
+                    }
+                    await this.ShowMessageAsync("转换完成", "图片已转换完成。", MessageDialogStyle.Affirmative, generalDialogSetting);
+                }
+            }
+        }
+
+
+        private async void ConvertWebPToImage(string path, ISupportedImageFormat format, string formatString)
+        {
+            byte[] b_image;
+            try
+            {
+                b_image = File.ReadAllBytes(path);
+            }
+            catch (Exception e)
+            {
+                await this.ShowMessageAsync("错误", "读入图片时发生错误: " + e.Message, MessageDialogStyle.Affirmative, generalDialogSetting);
+                return;
+            }
+            using (MemoryStream inStream = new MemoryStream(b_image))
+            {
+                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                {
+                    string savePath = Path.GetDirectoryName(path) + @"/" + Path.GetFileNameWithoutExtension(path) + formatString;
+                    if (File.Exists(savePath))
+                    {
+                        var existDialogRes = await this.ShowMessageAsync("文件已存在", "将要保存的文件: " + savePath + " 已存在，是否覆盖？", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                        {
+                            AffirmativeButtonText = "覆盖",
+                            NegativeButtonText = "取消",
+                            DialogTitleFontSize = 16
+                        });
+                        if (!(existDialogRes == MessageDialogResult.Affirmative))
+                        {
+                            return;
+                        }
+                    }
+                    try
+                    {
+                        WebPFormat webpFormat = new WebPFormat();                        
+                        imageFactory.Load(webpFormat.Load(inStream)).Format(format).Save(savePath);
                     }
                     catch (Exception e)
                     {
